@@ -16,7 +16,13 @@ def game():
         print(f"Your word is {len(word)} characters long:", guess_state)
         guess = input("Guess a letter in the word: ")
 
+        if guess in guessed:
+            print("Already guessed", guess.upper())
+        guessed.append(guess)
+
         if guess in word:
             print(chars_to_go)
+
+    
 
 game()
