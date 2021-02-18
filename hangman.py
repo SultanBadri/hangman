@@ -5,6 +5,7 @@ def game():
     attempts = 7
     guessed = []
     word = random.choice(words)
+    letters = set(word)
 
     while attempts:
         guess_state = ""
@@ -20,9 +21,7 @@ def game():
             print("Already guessed", guess.upper())
         guessed.append(guess)
 
-        if guess in word:
-            print(chars_to_go)
-
-    
+        word_list = [letter if letter in word else "_ " for letter in word]
+        print(word_list)
 
 game()
