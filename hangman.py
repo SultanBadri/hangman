@@ -1,27 +1,45 @@
 import random
 from words import words
 
-def game():
-    attempts = 7
-    guessed = []
+def get_word(words):
+    """Get random word that doesn't have hyphen or space."""
     word = random.choice(words)
-    letters = set(word)
+    while "-" in word or " " in word:
+        word = random.choice(words)
+    return word.upper()
 
-    while attempts:
-        guess_state = ""
-        for char in word:
-            guess_state += "_ "
+def game():
+    """Hangman game function."""
+    attempts = 7
+    word = get_word(words)
+    word_letters = set(word)
+    guessed_letters = []
 
-        chars_to_go = guess_state.count("_")
+    while attempts and len(word_letters) > 0:
+        if guessed_letters: # if you have made a guess, display message
+            print(f"You have {attempts} lives left and have used letters: ", \
+                  " ".join(guessed_letters))
 
-        print(f"Your word is {len(word)} characters long:", guess_state)
-        guess = input("Guess a letter in the word: ")
+        word_list = [letter if letter in guessed_letters else "-" for letter in word]
+        print("Your progress: ", " ".join(word_list))
 
-        if guess in guessed:
-            print("Already guessed", guess.upper())
-        guessed.append(guess)
+        guess = input("Guess a letter in the word: ").upper()
+        print("") # line break
 
-        word_list = [letter if letter in word else "_ " for letter in word]
-        print(word_list)
+        if guess in word_letters:
+            print("Correct!")
+            word_letters.remove(guess)
+            guessed_letters.append(guess)
+        else:
+            if guess in guessed_letters:
+                print("You already guessed", guess)
+            else:
+                print("Incorrect!")
+                guessed_letters.append(guess)
+                attempts -= 1
+    if attempts == 0:
+        print("Game Over!")
+    else:
+        print("You win!")
 
 game()
